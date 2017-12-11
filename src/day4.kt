@@ -1,5 +1,5 @@
 fun main(args: Array<String>) {
-    // partOne()
+    partOne()
 
     val test = """abcde fghij
 abcde xyz ecdab

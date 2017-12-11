@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 private fun redistributeMemory(example: String): Int {
     var count = 0
     val seen: MutableList<Array<Int>> = arrayListOf()
-    var current: Array<Int> = stringToArray(example)
+    val current: Array<Int> = stringToArray(example)
     while (!seen.any { a -> a.contentDeepEquals(current) }) {
         //println("Loop:" + current.contentToString())
         seen.add(current.clone())
@@ -42,7 +42,7 @@ private fun redistributeMemory(example: String): Int {
 private fun loopSize(example: String): Int {
     var count = 0
     val seen: MutableList<Array<Int>> = arrayListOf()
-    var current: Array<Int> = stringToArray(example)
+    val current: Array<Int> = stringToArray(example)
     while (!seen.any { a -> a.contentDeepEquals(current) }) {
         seen.add(current.clone())
         redistribute(current)
@@ -69,5 +69,5 @@ private fun redistribute(current: Array<Int>) {
 
 private fun stringToArray(input: String) : Array<Int> {
     val values = input.split("\\s+".toRegex())
-    return Array<Int>(values.size, { i -> values[i].toInt() } )
+    return Array(values.size, { i -> values[i].toInt() })
 }

@@ -1102,15 +1102,15 @@ fun main(args: Array<String>) {
 -567
 -889"""
 
-    // println(processArray(stringToArray(example)))
-    // println(processArray(stringToArray(puzzle)))
+    println(processArray(stringToArray(example)))
+    println(processArray(stringToArray(puzzle)))
     println(processArray2(stringToArray(example)))
     println(processArray2(stringToArray(puzzle)))
 }
 
 private fun stringToArray(input: String) : Array<Int> {
     val lines = input.lines()
-    return Array<Int>(lines.size, { i -> lines[i].toInt() } )
+    return Array(lines.size, { i -> lines[i].toInt() })
 }
 
 private fun processArray(array: Array<Int>) : Int {

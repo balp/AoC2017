@@ -46,8 +46,8 @@ fun main(args: Array<String>) {
 238	373	228	395	86	59	289	87	437	384	233	79	470	403	441	352
 151	3473	1435	87	1517	1480	140	2353	1293	118	163	3321	2537	3061	1532	3402
 127	375	330	257	220	295	145	335	304	165	151	141	289	256	195	272"""
-    println(divisableSum(stringToArrays(ex2)))
-    println(divisableSum(stringToArrays(puzzle2)))
+    println(dividableSum(stringToArrays(ex2)))
+    println(dividableSum(stringToArrays(puzzle2)))
 }
 
 private fun checkSumArray(exampleArray: Array<Array<Int>>): Int {
@@ -62,7 +62,7 @@ private fun checkSumArray(exampleArray: Array<Array<Int>>): Int {
     return checksum
 }
 
-private fun divisableSum(exampleArray: Array<Array<Int>>): Int {
+private fun dividableSum(exampleArray: Array<Array<Int>>): Int {
     var checksum = 0
     for (row in exampleArray) {
         println(row.contentToString())

@@ -1014,15 +1014,15 @@ wui inc -120 if i > -2038"""
 }
 
 private fun runInstructions(example: String): HashMap<String, Int> {
-    val instrucationParser = "\\s*(\\w+)\\s+(\\w+)\\s+(\\+?-?\\d+)\\s+if\\s+(\\w+)\\s+(.*)\\s+(\\+?-?\\d+)".toRegex()
+    val instructionParser = "\\s*(\\w+)\\s+(\\w+)\\s+(\\+?-?\\d+)\\s+if\\s+(\\w+)\\s+(.*)\\s+(\\+?-?\\d+)".toRegex()
     var max = 0
     val registers: HashMap<String, Int> = hashMapOf()
     for (line in example.lines()) {
         // parse line
         println(line)
-        if (instrucationParser.matches(line)) {
+        if (instructionParser.matches(line)) {
             println("instruction")
-            val matches = instrucationParser.matchEntire(line)
+            val matches = instructionParser.matchEntire(line)
             val register = matches?.groups?.get(1)?.value
             print(register + ":")
             val instruction = matches?.groups?.get(2)?.value
@@ -1033,8 +1033,8 @@ private fun runInstructions(example: String): HashMap<String, Int> {
             print(conditionRegister + ":")
             val conditionOperator = matches?.groups?.get(5)?.value
             print(conditionOperator + ":")
-            val condictionValue = matches?.groups?.get(6)?.value
-            println(condictionValue)
+            val conductionValue = matches?.groups?.get(6)?.value
+            println(conductionValue)
             if (!registers.containsKey(register)) {
                 registers[register!!] = 0
             }
@@ -1044,12 +1044,12 @@ private fun runInstructions(example: String): HashMap<String, Int> {
             // if condition
             var operate = false
             when (conditionOperator) {
-                ">" -> operate = registers[conditionRegister]!! > condictionValue!!.toInt()
-                "<" -> operate = registers[conditionRegister]!! < condictionValue!!.toInt()
-                "<=" -> operate = registers[conditionRegister]!! <= condictionValue!!.toInt()
-                ">=" -> operate = registers[conditionRegister]!! >= condictionValue!!.toInt()
-                "==" -> operate = registers[conditionRegister]!! == condictionValue!!.toInt()
-                "!=" -> operate = registers[conditionRegister]!! != condictionValue!!.toInt()
+                ">" -> operate = registers[conditionRegister]!! > conductionValue!!.toInt()
+                "<" -> operate = registers[conditionRegister]!! < conductionValue!!.toInt()
+                "<=" -> operate = registers[conditionRegister]!! <= conductionValue!!.toInt()
+                ">=" -> operate = registers[conditionRegister]!! >= conductionValue!!.toInt()
+                "==" -> operate = registers[conditionRegister]!! == conductionValue!!.toInt()
+                "!=" -> operate = registers[conditionRegister]!! != conductionValue!!.toInt()
             }
             println(operate)
             // change register

@@ -1,6 +1,4 @@
-
-class TreeNode<T>(value: T){
-    var value:T = value
+class TreeNode<T>(var value: T) {
     var parent:TreeNode<T>? = null
     var children:MutableList<TreeNode<T>> = mutableListOf()
 
@@ -10,7 +8,7 @@ class TreeNode<T>(value: T){
     }
 
     override fun toString(): String {
-        var s = "${value}"
+        var s = "$value"
         if (!children.isEmpty()) {
             s += " {" + children.map { it.toString() } + " }"
         }
@@ -1324,25 +1322,39 @@ oxpmdnr (244) -> hpboonp, vjycok
 pzpybas (18)"""
 
 //    println("** root: " + findRoot(buildTree(example)))
-//    println("** root: " + findRoot(buildTree(puzzle)))
+    println("** root: " + findRoot(buildTree(puzzle)))
 
     val exampleTree = findRoot2(buildTree2(example))
     println("** root: " + toWeightString(exampleTree))
     findUnbalance(exampleTree, 0)
-    // val tree = findRoot2(buildTree2(puzzle))
-    // println("** root: " + toWeightString(tree))
-    // findUnbalance(tree,0)
+    println("** root: " + findRoot2(buildTree2(puzzle)))
+    findUnbalance(findRoot2(buildTree2(puzzle)), 0)
 
 }
 
 fun findUnbalance(tree: TreeNode<Pair<String, Int>>, depth: Int) {
-    // println(tree.value.first)
+    //println(tree.value.first)
     
     if (!tree.children.isEmpty()) {
-        for (c in tree.children) {
-            val message = c.value.first + ":" + treeWeight(c)
-            println("".padStart(depth, '-') + message)
-            findUnbalance(c, depth+2)
+        val sums: Array<Int> = Array(tree.children.size, { 0 })
+        for ((i, c) in tree.children.withIndex()) {
+            sums[i] = treeWeight(tree = c)
+        }
+        val balanced: Boolean = sums.all { sums[0] == it }
+        if (!balanced) {
+            for ((i, c) in tree.children.withIndex()) {
+                print("".padStart(depth, '-')
+                        + c.value.first + ": " + c.value.second + " + (")
+                for (cc in tree.children) {
+                    print(treeWeight(cc).toString() + " + ")
+                }
+                //61 + 61 + 61
+                println(") = " + sums[i] + " ... " + (sums[0] - sums[i])
+                        + " -> " + (c.value.second + (sums[0] - sums[i]))
+                )
+
+                findUnbalance(c, depth + 2)
+            }
         }
     }
 }
@@ -1350,7 +1362,7 @@ fun findUnbalance(tree: TreeNode<Pair<String, Int>>, depth: Int) {
 fun treeWeight(tree: TreeNode<Pair<String, Int>>) : Int {
     var w = tree.value.second
     if (!tree.children.isEmpty()) {
-        w += tree.children.sumBy { it.value.second }
+        w += tree.children.sumBy { treeWeight(it) }
     }
     return w
 }
@@ -1365,9 +1377,9 @@ fun toWeightString(tree: TreeNode<Pair<String,Int>>): String {
 
 private fun findRoot(node: TreeNode<String>): TreeNode<String> {
     var root = node
-    println("root: " + root)
+    // println("root: " + root)
     while (root.parent != null) {
-        println("move root:" + root)
+        // println("move root:" + root)
         root = root.parent!!
     }
     return root
@@ -1388,56 +1400,58 @@ private fun buildTree(input: String) : TreeNode<String> {
             // println(name + ":" + number + ":" + children)
             allNodes.add(TreeNode(name!!))
         } else if (leafMatch.matches(line)){
-            println("leaf")
+            // println("leaf")
             val matches = leafMatch.matchEntire(line)
-            println(matches?.groupValues)
+            // println(matches?.groupValues)
             val name = matches?.groups?.get(1)?.value
             val number = matches?.groups?.get(2)?.value
-            println(name + ":" + number)
+            // println(name + ":" + number)
             allNodes.add(TreeNode(name!!))
         }
     }
     var root:TreeNode<String>? = null
-    println(allNodes)
+    // println(allNodes)
     for (line in input.lines()) {
         if (nodeMatch.matches(line)) {
             val matches = nodeMatch.matchEntire(line)
-            println(matches?.groupValues)
+            // println(matches?.groupValues)
             val name = matches?.groups?.get(1)?.value
             val number = matches?.groups?.get(2)?.value
             val children = matches?.groups?.get(3)?.value
 
             val node = allNodes.find { it.value == name }
             if (node != null) {
-                println("to " + node + " add children " + children!!)
+                // println("to " + node + " add children " + children!!)
                 if (root == null) {
-                    println("initial root")
+                    // println("initial root")
                     root = node
                 }
-                for (childname in children.split(",\\s+".toRegex())) {
-                    val child = allNodes.find { it.value == childname }
-                    if (child != null) {
-                        println("to " + node + " add child " + child)
-                        node.addChild(child)
-                        if (root == child) {
-                            root = node
-                            println("make root")
+                if (children != null) {
+                    for (childname in children.split(",\\s+".toRegex())) {
+                        val child = allNodes.find { it.value == childname }
+                        if (child != null) {
+                            // println("to $node add child $child")
+                            node.addChild(child)
+                            if (root == child) {
+                                root = node
+                                // println("make root")
+                            }
                         }
                     }
                 }
             }
         }
     }
-    println(allNodes)
-    println(root)
+    // println(allNodes)
+    // println(root)
     return root!!
 }
 
 private fun findRoot2(node: TreeNode<Pair<String,Int>>): TreeNode<Pair<String,Int>> {
     var root = node
-    println("root: " + root)
+    // println("root: " + root)
     while (root.parent != null) {
-        println("move root:" + root)
+        // println("move root:" + root)
         root = root.parent!!
     }
     return root
@@ -1457,47 +1471,49 @@ private fun buildTree2(input: String) : TreeNode<Pair<String,Int>> {
             // println(name + ":" + number + ":" + children)
             allNodes.add(TreeNode(Pair(name!!,number!!.toInt())))
         } else if (leafMatch.matches(line)){
-            println("leaf")
+            // println("leaf")
             val matches = leafMatch.matchEntire(line)
-            println(matches?.groupValues)
+            // println(matches?.groupValues)
             val name = matches?.groups?.get(1)?.value
             val number = matches?.groups?.get(2)?.value
-            println(name + ":" + number)
+            // println(name + ":" + number)
             allNodes.add(TreeNode(Pair(name!!,number!!.toInt())))
         }
     }
     var root:TreeNode<Pair<String,Int>>? = null
-    println(allNodes)
+    // println(allNodes)
     for (line in input.lines()) {
         if (nodeMatch.matches(line)) {
             val matches = nodeMatch.matchEntire(line)
-            println(matches?.groupValues)
+            // println(matches?.groupValues)
             val name = matches?.groups?.get(1)?.value
             val number = matches?.groups?.get(2)?.value
             val children = matches?.groups?.get(3)?.value
 
             val node = allNodes.find { it.value.first == name }
             if (node != null) {
-                println("to " + node + " add children " + children!!)
+                // println("to " + node + " add children " + children!!)
                 if (root == null) {
-                    println("initial root")
+                    // println("initial root")
                     root = node
                 }
-                for (childname in children.split(",\\s+".toRegex())) {
-                    val child = allNodes.find { it.value.first == childname }
-                    if (child != null) {
-                        println("to " + node + " add child " + child)
-                        node.addChild(child)
-                        if (root == child) {
-                            root = node
-                            println("make root")
+                if (children != null) {
+                    for (childname in children.split(",\\s+".toRegex())) {
+                        val child = allNodes.find { it.value.first == childname }
+                        if (child != null) {
+                            // println("to $node add child $child")
+                            node.addChild(child)
+                            if (root == child) {
+                                root = node
+                                // println("make root")
+                            }
                         }
                     }
                 }
             }
         }
     }
-    println(allNodes)
-    println(root)
+    // println(allNodes)
+    // println(root)
     return root!!
 }

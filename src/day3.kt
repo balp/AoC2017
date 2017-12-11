@@ -1,10 +1,9 @@
-import java.awt.Point
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
 fun main(args: Array<String>) {
-    // partOne()
+    partOne()
     println(generateMatrixPartTwo(347991, 20))
 }
 
@@ -36,17 +35,14 @@ private fun manhattanDistance(from: Pair<Int,Int>, to: Pair<Int,Int>) : Int {
 }
 
 private fun numberToPos(input: Int, matrix: Array<Array<Int>>): Pair<Int, Int> {
-    var x = 0
-    for (row in matrix) {
-        var y = 0
-        for (col in row) {
+
+    for ((x, row) in matrix.withIndex()) {
+        for ((y, col) in row.withIndex()) {
             if (col == input) {
                 println("found")
                 return Pair(x,y)
             }
-            y++
         }
-        x++
     }
     throw Exception("Number not found")
 }
