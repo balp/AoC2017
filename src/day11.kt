@@ -67,7 +67,7 @@ private class Hex(val q: Int, val r: Int, val s: Int) {
     }
 
     fun move(direction: Int): Hex {
-        require(direction >= 0 && direction < 6)
+        require(direction in 0..5)
         return this.add(directions[direction])
     }
 }
