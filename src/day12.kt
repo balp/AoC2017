@@ -2007,33 +2007,20 @@ fun main(args: Array<String>) {
 1998 <-> 1300
 1999 <-> 175, 1161"""
 
-//    val exampleResult = connectionHandler(example)
-//    println(exampleResult)
-//    println(exampleResult.size)
-//
-//    val puzzleResult = connectionHandler(puzzle)
-//    println(puzzleResult)
-//    println(puzzleResult.size)
-
+    println(connectionHandler(example).size)
+    println(connectionHandler(puzzle).size)
     println(allGroups(example).size)
     println(allGroups(puzzle).size)
-
 }
 
 private fun allGroups(example: String): MutableList<Set<Int>> {
     val nodes = makeGraph(example)
     val groups = mutableListOf<Set<Int>>()
-    for ((i, n) in nodes) {
-        println(i.toString() + "..." + n)
-        var seen = false
-        for (group in groups) {
-            if (i in group) {
-                seen = true
-            }
-        }
-        if (!seen) {
+    for ((id, node) in nodes) {
+        println(id.toString() + "..." + node)
+        if (!groups.any { id in it }) {
             val newGroup = mutableSetOf<Int>()
-            connections(n, newGroup, nodes)
+            connections(node, newGroup, nodes)
             groups.add(newGroup)
         }
     }
@@ -2058,8 +2045,8 @@ private fun makeGraph(example: String): MutableMap<Int, Node> {
             //println("matches")
             val matches = connectionParser.matchEntire(line)
             if (matches != null) {
-                val name = matches.groups.get(1)!!.value.toInt()
-                val to = matches.groups.get(2)!!.value
+                val name = matches.groups[1]!!.value.toInt()
+                val to = matches.groups[2]!!.value
                 //println("from: " + name + " >> " + to)
                 val destinations = to.split(",\\s+".toRegex())
                 val node = Node(name)
@@ -2088,7 +2075,7 @@ fun connections(node: Node, set: MutableSet<Int>, nodes: Map<Int, Node>) {
     }
 }
 
-class Node(val value: Int) {
+class Node(private val value: Int) {
     val links = mutableSetOf<Link>()
     override fun toString(): String {
         var s = value.toString()
@@ -2099,7 +2086,7 @@ class Node(val value: Int) {
     }
 }
 
-class Link(val from: Int, val to: Int) {
+class Link(private val from: Int, val to: Int) {
     override fun toString(): String {
         return from.toString() + " <-> " + to.toString()
     }
