@@ -13,7 +13,16 @@ fun main(args: Array<String>) {
 
 }
 
-private fun stringHash(exInput: String): Array<String> {
+fun stringHash(exInput: String): Array<String> {
+    val denseArray = stringHashArray(exInput)
+    //println()
+    //println(denseArray.contentToString())
+
+    //println(strArray.contentToString())
+    return Array(16, { denseArray[it].toString(16) })
+}
+
+fun stringHashArray(exInput: String): Array<Int> {
     val extraLengths = arrayOf(17, 31, 73, 47, 23)
     val exInputArray = Array(exInput.length, { exInput[it].toInt() })
     //println(exInputArray.contentToString())
@@ -33,11 +42,7 @@ private fun stringHash(exInput: String): Array<String> {
         val sum = values.reduce { a, b -> a.xor(b) }
         denseArray[i] = sum
     }
-    //println()
-    //println(denseArray.contentToString())
-
-    //println(strArray.contentToString())
-    return Array(16, { denseArray[it].toString(16) })
+    return denseArray
 }
 
 private fun partOne(puzzle_lengths: String) {
