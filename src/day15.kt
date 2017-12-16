@@ -54,16 +54,19 @@ interface Generator {
     fun next(): Long
 }
 
-class SimpleGenerator(var value: Long, var multiplier: Long) : Generator {
-    val divisor = 2147483647
+class SimpleGenerator(private var value: Long,
+                      private var multiplier: Long) : Generator {
+    private val divisor = 2147483647
     override fun next(): Long {
         value = (value * multiplier) % divisor
         return value
     }
 }
 
-class PickyGenerator(var value: Long, var multiplier: Long, var dividor: Long) : Generator {
-    val divisor = 2147483647
+class PickyGenerator(private var value: Long,
+                     private var multiplier: Long,
+                     private var dividor: Long) : Generator {
+    private val divisor = 2147483647
     override fun next(): Long {
         do {
             value = (value * multiplier) % divisor

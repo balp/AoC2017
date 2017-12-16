@@ -5,30 +5,30 @@ fun main(args: Array<String>) {
     val example = "flqrgnkx"
     val puzzle = "xlqgujun"
 
-    //println(defragString(example))
-    //println(defragString(puzzle))
+    println(defragString(example))
+    println(defragString(puzzle))
     islandsInMatrix(defragToMatrix(example))
     islandsInMatrix(defragToMatrix(puzzle))
 }
 
 private fun defragString(example: String): Int {
-    var sum = 0
-    for (i in 0..127) {
-        val input = example + "-" + i.toString()
-        // println(input)
-        // println(stringHash(input).joinToString(""))
-        val numbers = stringHashArray(input)
-        // println(numbers.contentToString())
-        val strings = Array(16, { numbers[it].toString(2).padStart(8, '0') })
-        //println(strings.contentToString())
-        val row = strings.joinToString("")
-        //println(row)
-        var number = row.count { it == '1' }
-        // println(number)
-        sum += number
-
-    }
-    return sum
+    return (0..127)
+            .map {
+                example + "-" + it.toString()
+            }
+            .map {
+                stringHashArray(it)
+            }
+            .map { numbers ->
+                Array(16, { numbers[it].toString(2).padStart(8, '0') })
+            }
+            .map {
+                it.joinToString("")
+            }
+            .map { row ->
+                row.count { it == '1' }
+            }
+            .sum()
 }
 
 private fun depthFirstSearch(matrix: Array<Array<Int>>, x: Int, y: Int, count: Int) {
@@ -75,7 +75,7 @@ private fun islandsInMatrix(matrix: Array<Array<Int>>) {
 }
 
 private fun defragToMatrix(example: String): Array<Array<Int>> {
-    val result = Array<Array<Int>>(128, { Array(128, { -1 }) })
+    val result = Array(128, { Array(128, { -1 }) })
     for (i in 0..127) {
         val input = example + "-" + i.toString()
         // println(input)
@@ -86,7 +86,7 @@ private fun defragToMatrix(example: String): Array<Array<Int>> {
         //println(strings.contentToString())
         val row = strings.joinToString("")
         val chars = row.toCharArray()
-        val intArray = Array<Int>(128, { chars[it].toInt() - '0'.toInt() })
+        val intArray = Array(128, { chars[it].toInt() - '0'.toInt() })
         //println(intArray.contentToString())
         result[i] = intArray
 

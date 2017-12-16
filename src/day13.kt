@@ -75,8 +75,7 @@ private fun runFirewall(input: String): Int {
 }
 
 private fun scoreRun(layers: List<Layer>): Int {
-    val scoreLayers = List<Layer>(layers.size,
-            { i -> layers[i].copy() })
+    val scoreLayers = List(layers.size, { i -> layers[i].copy() })
     var score = 0
     val end = layers.last().layer
     var playerPosition = 0
@@ -95,8 +94,7 @@ private fun scoreRun(layers: List<Layer>): Int {
 }
 
 private fun cleanRun(layers: List<Layer>): Boolean {
-    val scoreLayers = List<Layer>(layers.size,
-            { i -> layers[i].copy() })
+    val scoreLayers = List(layers.size, { i -> layers[i].copy() })
     var clean = true
     val end = layers.last().layer
     var playerPosition = 0
@@ -128,7 +126,7 @@ private fun makeFirewall(example: String): MutableList<Layer> {
 
 class Layer(val layer: Int, val range: Int) {
     var pos = 0
-    var directon = 1
+    private var directon = 1
     fun step() {
         pos += directon
         if (pos == range - 1) {
